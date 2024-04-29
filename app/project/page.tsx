@@ -13,9 +13,11 @@ const ProjectPage = () => {
     <div className='flex'>
         {/* ProjectPage: #{projectId} */}
         <div className='w-1/4'></div>
-        <div className='flex'></div>
-        <div className='w-5/6'></div>
-        <WebTerminal />
+        <div className='w-1/2'></div>
+        <div className='flex justify-end'>
+            <div className='w-1/2 overflow-hidden'><WebTerminal /></div>
+        </div>
+        
     </div>
   )
 }
