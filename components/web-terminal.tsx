@@ -1,27 +1,3 @@
-// import React from 'react'
-// import Script from 'next/script'
-// import Link from 'next/link'
-// import { Terminal } from '@xterm/xterm';
-
-
-
-// const WebTerminal = () => {
-//   return (
-//     <>
-//     <Link rel="stylesheet" href="node_modules/@xterm/xterm/css/xterm.css" />
-//     <Script src="node_modules/@xterm/xterm/lib/xterm.js"></Script>
-//     <Script>
-//         var term = new Terminal();
-//         term.open(document.getElementById('terminal'));
-//         term.write('Hello from \x1B[1;3;31mxterm.js\x1B[0m $ ');
-//     </Script>
-//     <div id="terminal"></div>
-//     </>
-//   )
-// }
-
-// export default WebTerminal
-
 import React, { useEffect } from 'react';
 import { Terminal } from 'xterm';
 import 'xterm/css/xterm.css';
