@@ -76,6 +76,16 @@
   }
 
 
-  .xterm-dom-renderer-owner-2 {
-    display: none;
-  }
+.xterm-dom-renderer-owner-2 {
+  display: none;
+  overflow: hidden;
+}
+
+/* .xterm-helper-textarea {
+  overflow: scroll;
+} */s
+
+.monaco-editor {
+  width: fit-content;
+}
+

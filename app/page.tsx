@@ -14,13 +14,15 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
+import axios from 'axios'
 
 
 export default function Home() {
 
   const router = useRouter()
 
-  const [language, setLanguage] = useState<string>()
+  const [projectType, setProjectType] = useState<string>("react")
+  // console.log(projectType)
 
 
   const createProject = async(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
@@ -31,11 +33,16 @@ export default function Home() {
     // Write the code which moves the chosen language's 
     // code from bolierplate code directory to projectId 
     // directory in AWS S3
+    await axios.post("http://localhost:3001/project", {
+      projectId,
+      language: projectType
+    })
 
 
     // Make an API call to the Express server to fetch the 
     // projectId code from AWS S3 into /tmp/codedamn_workspaces/{projectid} directory of backend
-    // linux terminal.
+    // linux terminal. This is already initialised when websocket connection was made after being
+    // routed to the /project?projectId=${projectId} endpoint.
 
     // Make an API call to the Express server to create a
     // docker container with the tagName={projectId} using the custom
@@ -59,7 +66,7 @@ export default function Home() {
       <div>
       <h1 className="font-bold mb-4 text-xl">Select a language</h1>
       {/* Select Component */}
-      <Select onValueChange={(value) => setLanguage(value)} defaultValue="react">
+      <Select onValueChange={(value) => setProjectType(value)} defaultValue="react">
       <SelectTrigger className="w-[180px]">
         <SelectValue placeholder="Select a language" />
       </SelectTrigger>
