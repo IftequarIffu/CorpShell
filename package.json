@@ -17,6 +17,7 @@
     "@radix-ui/react-slot": "^1.0.2",
     "@xterm/addon-fit": "^0.10.0",
     "@xterm/xterm": "^5.5.0",
+    "aws-sdk": "^2.1613.0",
     "axios": "^1.6.8",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",

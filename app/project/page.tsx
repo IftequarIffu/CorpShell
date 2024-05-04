@@ -77,7 +77,7 @@ const ProjectPage = () => {
             {/* ProjectPage: #{projectId} */}
             {/* <div className='w-1/4'></div> */}
 
-            <div className='col-span-3 h-screen'>
+            <div className='col-span-3'>
                 {socket && <Editor socket={socket} selectedFile={selectedFile} onSelect={onSelect} files={fileStructure} />}
             </div>
             

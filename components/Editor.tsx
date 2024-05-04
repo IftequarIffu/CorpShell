@@ -38,7 +38,10 @@ export const Editor = ({
             onSelect={onSelect}
           />
         </Sidebar>
+        <div className="h-screen">
         <Code socket={socket} selectedFile={selectedFile} />
+        <iframe src='http://localhost:7681' className='w-full h-1/2'></iframe>
+        </div>
       </Main>
     </div>
   );
