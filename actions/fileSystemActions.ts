@@ -1,3 +1,4 @@
+'use server'
 import fs from "fs";
 
 interface File {
