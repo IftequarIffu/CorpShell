@@ -1,2 +1,2 @@
 
-export const EXECUTION_ENGINE_URI = "ws://localhost:3001";
+export const EXECUTION_ENGINE_URI = "http://localhost:3001/api/socket";

@@ -1,6 +1,7 @@
 import Editor from "@monaco-editor/react";
 import { File } from "../utils/file-manager";
 import { Socket } from "socket.io-client";
+import { OnChange } from "@monaco-editor/react";
 
 export const Code = ({ selectedFile, socket }: { selectedFile: File | undefined, socket: Socket }) => {
   if (!selectedFile)
@@ -19,15 +20,30 @@ export const Code = ({ selectedFile, socket }: { selectedFile: File | undefined,
       language = "typescript"
   
 
+    // function debounce(func: (value: string) => void, wait: number) {
+    //   let timeout: number;
+    //   return (value: string) => {
+    //     clearTimeout(timeout);
+    //     timeout = setTimeout(() => {
+    //       func(value);
+    //     }, wait);
+    //   };
+    // }
+
     function debounce(func: (value: string) => void, wait: number) {
-      let timeout: number;
+      let timeout: NodeJS.Timeout | undefined;
       return (value: string) => {
-        clearTimeout(timeout);
+        if (timeout) clearTimeout(timeout);
         timeout = setTimeout(() => {
           func(value);
         }, wait);
       };
     }
+
+    // const onChangeHandler: OnChange = (value: string|undefined, ev: editor.IModelContentChangedEvent) => {
+    //   // Your logic here
+    //   socket.emit("updateContent", { path: selectedFile!.path, content: value });
+    // };
 
   return (
       <Editor
@@ -35,11 +51,18 @@ export const Code = ({ selectedFile, socket }: { selectedFile: File | undefined,
         language={language}
         value={code}
         theme="vs-dark"
-        onChange={debounce((value) => {
-          // Should send diffs, for now sending the whole file
-          // PR and win a bounty!
-          socket.emit("updateContent", { path: selectedFile.path, content: value });
-        }, 500)}
+        onChange={(value, ev) => debounce((value) => { socket.emit("updateContent", { path: selectedFile.path, content: value });
+       }, 500)}
+        // onChange={debounce((value) => {
+        //   // Should send diffs, for now sending the whole file
+        //   // PR and win a bounty!
+        //   socket.emit("updateContent", { path: selectedFile.path, content: value });
+        // }, 500)}
       />
   )
 }
+
+
+    // Should send diffs, for now sending the whole file
+    // PR and win a bounty!
+    

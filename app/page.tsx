@@ -15,11 +15,16 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import axios from 'axios'
+import { copyS3Folder } from "@/app/actions/awsActions";
+import { LoaderIcon } from "lucide-react"
+import { createDockerImage, createContainer } from "./actions/dockerActions"
+
 
 
 export default function Home() {
 
   const router = useRouter()
+  const [isLoading, setIsLoading] = useState(false)
 
   const [projectType, setProjectType] = useState<string>("react")
   // console.log(projectType)
@@ -27,16 +32,20 @@ export default function Home() {
 
   const createProject = async(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
 
+    setIsLoading(true);
     const projectId = uuidv4(); 
     console.log(projectId)
-    
+    let language = projectType;
     // Write the code which moves the chosen language's 
     // code from bolierplate code directory to projectId 
     // directory in AWS S3
-    await axios.post("http://localhost:3001/project", {
-      projectId,
-      language: projectType
-    })
+    // await axios.post("http://localhost:3001/project", {
+    //   projectId,
+    //   language: projectType
+    // })
+
+    await copyS3Folder(`bolerplate-code/${language}`, `code/${projectId}`);
+
 
 
     // Make an API call to the Express server to fetch the 
@@ -53,7 +62,8 @@ export default function Home() {
 
     // 
 
-
+    createContainer(projectId as string)
+    console.log("Completed the creation of docker container")
     router.push(`/project?projectId=${projectId}`)
   }
 
@@ -79,7 +89,10 @@ export default function Home() {
       </SelectContent>
     </Select>
 
-    <Button className="mt-4" onClick={(e) => createProject(e)}>Create Project</Button>
+    <Button className="mt-4" onClick={(e) => createProject(e)}>
+      <p>Create Project</p>
+      { isLoading && <LoaderIcon className="animate-spin ms-2" /> }
+    </Button>
     </div>
 
 

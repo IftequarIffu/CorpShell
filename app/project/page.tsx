@@ -6,25 +6,35 @@ import WebTerminal from '@/components/web-terminal'
 
 import { useEffect, useState } from 'react';
 import { Editor } from '@/components/Editor';
-import { File, RemoteFile, Type } from '@/components/external/editor/utils/file-manager';
+import { Type, File, RemoteFile } from '@/components/external/editor/utils/file-manager';
 import { Socket, io } from 'socket.io-client';
 import { EXECUTION_ENGINE_URI } from './_config'
+import {PORT} from '../../constants'
+import { LoaderIcon } from "lucide-react"
+import {createContainer} from '../actions/dockerActions'
+
 
 
 function useSocket(projectId: string) {
-    const [socket, setSocket] = useState<Socket | null>(null);
+    const [sock, setSock] = useState<Socket | null>(null);
 
     useEffect(() => {
-        const newSocket = io(`${EXECUTION_ENGINE_URI}?projectId=${projectId}`);
+        const newSocket = io(`http://localhost:3000?projectId=${projectId}`);
         console.log("Socket", newSocket)
-        setSocket(newSocket);
+
+        newSocket.on("connect", () => {
+            console.log(newSocket.id)
+        })
+
+        setSock(newSocket);
 
         return () => {
             newSocket.disconnect();
         };
     }, [projectId]);
 
-    return socket;
+    return sock;
+
 }
 
 
@@ -40,11 +50,16 @@ const ProjectPage = () => {
     const [showOutput, setShowOutput] = useState(false);
 
     useEffect(() => {
+        console.log("Reached UseEffect of page.tsx of project page", socket)
+
         if (socket) {
             socket.on('loaded', ({ rootContent }: { rootContent: RemoteFile[] }) => {
+
+                console.log("Reached loaded on client", rootContent);
                 setLoaded(true);
                 setFileStructure(rootContent);
             });
+
         }
     }, [socket]);
 
@@ -68,12 +83,12 @@ const ProjectPage = () => {
     };
 
     if (!loaded) {
-        return "Loading...";
+        return <div className='flex justify-center items-center'><LoaderIcon className="animate-spin ms-2 " /></div>;
     }
 
 
     return (
-        <div className='grid grid-cols-4 gap-2 h-screen '>
+        <div className='grid grid-cols-4 h-screen '>
             {/* ProjectPage: #{projectId} */}
             {/* <div className='w-1/4'></div> */}
 
@@ -82,12 +97,13 @@ const ProjectPage = () => {
             </div>
             
             <div className='h-screen'>
-                <iframe src='http://localhost:7681' className='w-full h-1/2'></iframe>
-                
+                <iframe src='http://localhost:8080' className='w-full h-1/2'></iframe>
+                <iframe src='http://localhost:3000' className='w-full h-1/2'></iframe>
+                {/* <WebTerminal /> */}
             </div>
 
         </div>
-    )
+    )   
 }
 
 export default ProjectPage

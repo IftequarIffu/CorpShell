@@ -16,7 +16,7 @@ function WebTerminal() {
     const fitAddon = new FitAddon();
     const terminalContainer = document.getElementById("terminal");
     if (terminalContainer) {
-      const socket = new WebSocket("ws://localhost:2375/containers/52f6c14fd275 /attach/ws?stream=1&stdout=1&stdin=1&logs=1");
+      const socket = new WebSocket("ws://localhost:2375/containers/d4015d1007c2/attach/ws?stream=1&stdout=1&stdin=1&logs=1");
 
       socket.onopen = () => {
         console.log("WebSocket connection established.");
